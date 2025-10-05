@@ -105,7 +105,7 @@ function App() {
           </div>
           
           {/* Cards Grid for this suit */}
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(50px,1fr))] gap-2 w-full xl:grid-cols-[repeat(auto-fill,minmax(110px,1fr))] lg:gap-3 md:grid-cols-[repeat(auto-fill,minmax(100px,1fr))] md:gap-2.5 md:px-2.5 sm:grid-cols-[repeat(auto-fill,minmax(85px,1fr))] sm:gap-2 sm:px-1">
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(40px,1fr))] gap-2 w-full xl:grid-cols-[repeat(auto-fill,minmax(110px,1fr))] lg:gap-3 md:grid-cols-[repeat(auto-fill,minmax(100px,1fr))] md:gap-2.5 md:px-2.5 sm:grid-cols-[repeat(auto-fill,minmax(85px,1fr))] sm:gap-2 sm:px-1">
             {group.cards
               .filter(card => hideClickedCards ? !cardsToHide.has(card.id) : true)
               .map((card) => {
@@ -147,7 +147,7 @@ function App() {
       ))}
       
       {/* Fixed Control Buttons */}
-      <div className="fixed bottom-4 right-4 flex flex-col gap-2">
+      <div className="mt-4 flex flex-col gap-2">
         <button
           onClick={hideUsedCards}
           className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-2 px-2 rounded-lg shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-105 text-sm"
