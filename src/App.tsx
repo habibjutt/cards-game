@@ -15,6 +15,7 @@ function App() {
   const cards: Card[] = cardsData.cards;
   const [clickedCards, setClickedCards] = useState<Set<number>>(new Set());
   const [hideClickedCards, setHideClickedCards] = useState<boolean>(false);
+  const [cardsToHide, setCardsToHide] = useState<Set<number>>(new Set());
 
   // Sort cards by rank order: A, K, Q, J, 10, 9, 8, 7, 6, 5, 4, 3, 2
   const getRankOrder = (rank: string): number => {
@@ -75,8 +76,10 @@ function App() {
     setClickedCards(new Set());
   };
 
-  const toggleHideClickedCards = () => {
-    setHideClickedCards(prev => !prev);
+  const hideUsedCards = () => {
+    // Always hide currently clicked cards
+    setCardsToHide(new Set(clickedCards));
+    setHideClickedCards(true);
   };
 
   const isCardClicked = (cardId: number) => clickedCards.has(cardId);
@@ -91,7 +94,7 @@ function App() {
         <div key={group.suit} className="mb-8">
           {/* Suit Heading */}
           <div className="flex items-center mb-4">
-            <h2 className={`text-3xl font-bold mr-3 ${
+            <h2 className={`text-xl font-bold mr-3 ${
               group.cards[0]?.color === 'red' ? 'text-red-600' : 'text-gray-800'
             }`}>
               {getSuitSymbol(group.suit)} {getSuitName(group.suit)}
@@ -102,7 +105,7 @@ function App() {
           {/* Cards Grid for this suit */}
           <div className="grid grid-cols-[repeat(auto-fill,minmax(80px,1fr))] gap-2 w-full xl:grid-cols-[repeat(auto-fill,minmax(110px,1fr))] lg:gap-3 md:grid-cols-[repeat(auto-fill,minmax(100px,1fr))] md:gap-2.5 md:px-2.5 sm:grid-cols-[repeat(auto-fill,minmax(85px,1fr))] sm:gap-2 sm:px-1">
             {group.cards
-              .filter(card => hideClickedCards ? !isCardClicked(card.id) : true)
+              .filter(card => hideClickedCards ? !cardsToHide.has(card.id) : true)
               .map((card) => {
               const clicked = isCardClicked(card.id);
               return (
@@ -129,11 +132,11 @@ function App() {
                   }`}>
                     {getSuitSymbol(card.suit)}
                   </div>
-                  <div className={`text-xs font-medium mt-1 md:text-xs sm:text-xs ${
+                  {/* <div className={`text-xs font-medium mt-1 md:text-xs sm:text-xs ${
                     clicked ? 'text-gray-500 opacity-60' : 'opacity-80'
                   }`}>
                     {card.name}
-                  </div>
+                  </div> */}
                 </div>
               );
             })}
@@ -141,21 +144,17 @@ function App() {
         </div>
       ))}
       
-      {/* Control Buttons */}
-      <div className="flex justify-center gap-4 mt-8 mb-4">
+      {/* Fixed Control Buttons */}
+      <div className="fixed bottom-4 right-4 flex flex-col gap-2">
         <button
-          onClick={toggleHideClickedCards}
-          className={`font-bold py-3 px-6 rounded-lg shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-105 text-lg ${
-            hideClickedCards 
-              ? 'bg-green-600 hover:bg-green-700 text-white' 
-              : 'bg-orange-600 hover:bg-orange-700 text-white'
-          }`}
+          onClick={hideUsedCards}
+          className="bg-orange-600 hover:bg-orange-700 text-white font-bold py-1 px-1 rounded-lg shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-105 text-sm"
         >
-          {hideClickedCards ? 'Show All Cards' : 'Hide Used Cards'}
+          Hide Used Cards
         </button>
         <button
           onClick={resetGame}
-          className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-105 text-lg"
+          className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-1 px-1 rounded-lg shadow-lg transition-all duration-200 hover:shadow-xl hover:scale-105 text-sm"
         >
           Reset Game
         </button>
