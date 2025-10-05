@@ -74,6 +74,8 @@ function App() {
 
   const resetGame = () => {
     setClickedCards(new Set());
+    setHideClickedCards(false);
+    setCardsToHide(new Set());
   };
 
   const hideUsedCards = () => {
